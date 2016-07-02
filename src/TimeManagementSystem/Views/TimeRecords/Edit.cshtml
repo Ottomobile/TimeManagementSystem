@@ -1,0 +1,92 @@
+@model TimeManagementSystem.Models.TimeRecord
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>TimeRecord</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="ID" />
+        <div class="form-group">
+            <label asp-for="Comments" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Comments" class="form-control" />
+                <span asp-validation-for="Comments" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DurationBreak" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DurationBreak" class="form-control" />
+                <span asp-validation-for="DurationBreak" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DurationWork" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DurationWork" class="form-control" />
+                <span asp-validation-for="DurationWork" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="RecordDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="RecordDate" class="form-control" />
+                <span asp-validation-for="RecordDate" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TimeBreakEnd" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TimeBreakEnd" class="form-control" />
+                <span asp-validation-for="TimeBreakEnd" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TimeBreakStart" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TimeBreakStart" class="form-control" />
+                <span asp-validation-for="TimeBreakStart" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TimeTotal" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TimeTotal" class="form-control" />
+                <span asp-validation-for="TimeTotal" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TimeWorkEnd" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TimeWorkEnd" class="form-control" />
+                <span asp-validation-for="TimeWorkEnd" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TimeWorkStart" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TimeWorkStart" class="form-control" />
+                <span asp-validation-for="TimeWorkStart" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
