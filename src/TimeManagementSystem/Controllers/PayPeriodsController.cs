@@ -53,7 +53,7 @@ namespace TimeManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Comments,Hours,PeriodEnd,PeriodStart,PeriodTotalTime")] PayPeriod payPeriod)
+        public async Task<IActionResult> Create([Bind("ID,Comments,PeriodEnd,PeriodStart,PeriodTime,MiscMin,PeriodTotalTime")] PayPeriod payPeriod)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace TimeManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Comments,Hours,PeriodEnd,PeriodStart,PeriodTotalTime")] PayPeriod payPeriod)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Comments,PeriodEnd,PeriodStart,PeriodTime,MiscMin,PeriodTotalTime")] PayPeriod payPeriod)
         {
             if (id != payPeriod.ID)
             {
