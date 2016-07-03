@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using TimeManagementSystem.Data;
 
-namespace TimeManagementSystem.Data.Migrations
+namespace TimeManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20160702235302_Initial")]
+    [Migration("20160703032203_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -180,15 +180,11 @@ namespace TimeManagementSystem.Data.Migrations
 
                     b.Property<string>("Comments");
 
-                    b.Property<DateTime>("DurationBreak");
-
                     b.Property<DateTime>("DurationWork");
 
                     b.Property<DateTime>("RecordDate");
 
-                    b.Property<DateTime>("TimeBreakEnd");
-
-                    b.Property<DateTime>("TimeBreakStart");
+                    b.Property<int>("TimeBreak");
 
                     b.Property<DateTime>("TimeTotal");
 

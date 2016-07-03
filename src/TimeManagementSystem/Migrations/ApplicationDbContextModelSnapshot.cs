@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using TimeManagementSystem.Data;
 
-namespace TimeManagementSystem.Data.Migrations
+namespace TimeManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -179,15 +179,11 @@ namespace TimeManagementSystem.Data.Migrations
 
                     b.Property<string>("Comments");
 
-                    b.Property<DateTime>("DurationBreak");
-
                     b.Property<DateTime>("DurationWork");
 
                     b.Property<DateTime>("RecordDate");
 
-                    b.Property<DateTime>("TimeBreakEnd");
-
-                    b.Property<DateTime>("TimeBreakStart");
+                    b.Property<int>("TimeBreak");
 
                     b.Property<DateTime>("TimeTotal");
 

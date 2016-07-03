@@ -13,31 +13,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Comments)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DurationBreak)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DurationWork)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.RecordDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TimeBreakEnd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TimeBreakStart)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TimeTotal)
+                @Html.DisplayNameFor(model => model.TimeWorkStart)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TimeWorkEnd)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TimeWorkStart)
+                @Html.DisplayNameFor(model => model.DurationWork)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeBreak)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comments)
             </th>
             <th></th>
         </tr>
@@ -46,31 +40,25 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Comments)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DurationBreak)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DurationWork)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.RecordDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TimeBreakEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeBreakStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeTotal)
+                @Html.DisplayFor(modelItem => item.TimeWorkStart)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TimeWorkEnd)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TimeWorkStart)
+                @Html.DisplayFor(modelItem => item.DurationWork)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeBreak)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comments)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |

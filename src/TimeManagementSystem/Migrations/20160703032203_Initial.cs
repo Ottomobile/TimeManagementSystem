@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace TimeManagementSystem.Data.Migrations
+namespace TimeManagementSystem.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -62,6 +60,25 @@ namespace TimeManagementSystem.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimeRecord",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Comments = table.Column<string>(nullable: true),
+                    DurationWork = table.Column<DateTime>(nullable: false),
+                    RecordDate = table.Column<DateTime>(nullable: false),
+                    TimeBreak = table.Column<int>(nullable: false),
+                    TimeTotal = table.Column<DateTime>(nullable: false),
+                    TimeWorkEnd = table.Column<DateTime>(nullable: false),
+                    TimeWorkStart = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeRecord", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -208,6 +225,9 @@ namespace TimeManagementSystem.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "TimeRecord");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

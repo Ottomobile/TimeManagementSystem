@@ -53,10 +53,24 @@ namespace TimeManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Comments,DurationBreak,DurationWork,RecordDate,TimeBreakEnd,TimeBreakStart,TimeTotal,TimeWorkEnd,TimeWorkStart")] TimeRecord timeRecord)
+        public async Task<IActionResult> Create([Bind("ID,Comments,DurationWork,RecordDate,TimeBreak,TimeTotal,TimeWorkEnd,TimeWorkStart")] TimeRecord timeRecord)
         {
             if (ModelState.IsValid)
             {
+                timeRecord.TimeWorkStart = new DateTime(timeRecord.RecordDate.Year,
+                                                    timeRecord.RecordDate.Month,
+                                                    timeRecord.RecordDate.Day,
+                                                    timeRecord.TimeWorkStart.Hour,
+                                                    timeRecord.TimeWorkStart.Minute,
+                                                    timeRecord.TimeWorkStart.Second);
+
+                timeRecord.TimeWorkEnd = new DateTime(timeRecord.RecordDate.Year,
+                                            timeRecord.RecordDate.Month,
+                                            timeRecord.RecordDate.Day,
+                                            timeRecord.TimeWorkEnd.Hour,
+                                            timeRecord.TimeWorkEnd.Minute,
+                                            timeRecord.TimeWorkEnd.Second);
+
                 _context.Add(timeRecord);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");

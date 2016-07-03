@@ -1,17 +1,32 @@
 ﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace TimeManagementSystem.Models
 {
     public class TimeRecord
     {
         public int ID { get; set; }
+
+        [Display(Name = "Date")]
+        [DataType(DataType.Date)]
         public DateTime RecordDate { get; set; }
+
+        [Display(Name = "Work Start Time")]
+        [DataType(DataType.Time)]
         public DateTime TimeWorkStart { get; set; }
+
+        [Display(Name = "Work End Time")]
+        [DataType(DataType.Time)]
         public DateTime TimeWorkEnd { get; set; }
+
+        [Display(Name = "Duration Worked")]
+        [DataType(DataType.Time)]
         public DateTime DurationWork { get; set; }
-        public DateTime TimeBreakStart { get; set; }
-        public DateTime TimeBreakEnd { get; set; }
-        public DateTime DurationBreak { get; set; }
+
+        [Display(Name = "Break Time")]
+        public int TimeBreak { get; set; }
+
         public DateTime TimeTotal { get; set; }
         public string Comments { get; set; }
     }
