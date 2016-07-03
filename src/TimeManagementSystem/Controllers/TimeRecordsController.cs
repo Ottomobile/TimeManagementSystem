@@ -22,7 +22,9 @@ namespace TimeManagementSystem.Controllers
         // GET: TimeRecords
         public async Task<IActionResult> Index()
         {
-            return View(await _context.TimeRecord.ToListAsync());
+            List<TimeRecord> loggedRecords = await _context.TimeRecord.ToListAsync();
+            loggedRecords = loggedRecords.OrderByDescending(x => x.RecordDate).ToList();
+            return View(loggedRecords);
         }
 
         // GET: TimeRecords/Details/5
