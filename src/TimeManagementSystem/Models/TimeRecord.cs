@@ -24,10 +24,10 @@ namespace TimeManagementSystem.Models
         [DataType(DataType.Duration)]
         public TimeSpan DurationWork { get; set; }
 
-        [Display(Name = "Break Time")]
+        [Display(Name = "Break Time (min)")]
+        [Range(0, 300)]
         public int TimeBreak { get; set; }
 
-        public DateTime TimeTotal { get; set; }
         public string Comments { get; set; }
     }
 }
