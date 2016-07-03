@@ -21,8 +21,8 @@ namespace TimeManagementSystem.Models
         public DateTime TimeWorkEnd { get; set; }
 
         [Display(Name = "Duration Worked")]
-        [DataType(DataType.Time)]
-        public DateTime DurationWork { get; set; }
+        [DataType(DataType.Duration)]
+        public TimeSpan DurationWork { get; set; }
 
         [Display(Name = "Break Time")]
         public int TimeBreak { get; set; }

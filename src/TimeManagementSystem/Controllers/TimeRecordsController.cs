@@ -71,6 +71,11 @@ namespace TimeManagementSystem.Controllers
                                             timeRecord.TimeWorkEnd.Minute,
                                             timeRecord.TimeWorkEnd.Second);
 
+                if (timeRecord.TimeWorkEnd > timeRecord.TimeWorkStart)
+                {
+                    timeRecord.DurationWork = timeRecord.TimeWorkEnd - timeRecord.TimeWorkStart;
+                }
+
                 _context.Add(timeRecord);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
