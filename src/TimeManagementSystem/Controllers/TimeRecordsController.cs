@@ -64,16 +64,20 @@ namespace TimeManagementSystem.Controllers
                                                     timeRecord.TimeWorkStart.Minute,
                                                     timeRecord.TimeWorkStart.Second);
 
-                timeRecord.TimeWorkEnd = new DateTime(timeRecord.RecordDate.Year,
-                                            timeRecord.RecordDate.Month,
-                                            timeRecord.RecordDate.Day,
-                                            timeRecord.TimeWorkEnd.Hour,
-                                            timeRecord.TimeWorkEnd.Minute,
-                                            timeRecord.TimeWorkEnd.Second);
-
-                if (timeRecord.TimeWorkEnd > timeRecord.TimeWorkStart)
+                if (timeRecord.TimeWorkEnd != null)
                 {
-                    timeRecord.DurationWork = timeRecord.TimeWorkEnd - timeRecord.TimeWorkStart;
+                    timeRecord.TimeWorkEnd = new DateTime(timeRecord.RecordDate.Year,
+                                                timeRecord.RecordDate.Month,
+                                                timeRecord.RecordDate.Day,
+                                                ((DateTime)timeRecord.TimeWorkEnd).Hour,
+                                                ((DateTime)timeRecord.TimeWorkEnd).Minute,
+                                                ((DateTime)timeRecord.TimeWorkEnd).Second);
+                }
+
+                if (timeRecord.TimeWorkEnd != null &&
+                    timeRecord.TimeWorkEnd > timeRecord.TimeWorkStart)
+                {
+                    timeRecord.DurationWork = (DateTime)timeRecord.TimeWorkEnd - timeRecord.TimeWorkStart;
                 }
 
                 _context.Add(timeRecord);

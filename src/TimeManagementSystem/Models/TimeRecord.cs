@@ -18,7 +18,7 @@ namespace TimeManagementSystem.Models
 
         [Display(Name = "Work End Time")]
         [DataType(DataType.Time)]
-        public DateTime TimeWorkEnd { get; set; }
+        public DateTime? TimeWorkEnd { get; set; }
 
         [Display(Name = "Duration Worked")]
         [DataType(DataType.Duration)]
