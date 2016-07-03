@@ -53,39 +53,11 @@ namespace TimeManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Comments,DurationWork,RecordDate,TimeBreak,TimeTotal,TimeWorkEnd,TimeWorkStart")] TimeRecord timeRecord)
+        public async Task<IActionResult> Create([Bind("ID,Comments,DurationWork,RecordDate,TimeBreak,TimeWorkEnd,TimeWorkStart")] TimeRecord timeRecord)
         {
             if (ModelState.IsValid)
             {
-                timeRecord.TimeWorkStart = new DateTime(timeRecord.RecordDate.Year,
-                                                    timeRecord.RecordDate.Month,
-                                                    timeRecord.RecordDate.Day,
-                                                    timeRecord.TimeWorkStart.Hour,
-                                                    timeRecord.TimeWorkStart.Minute,
-                                                    timeRecord.TimeWorkStart.Second);
-
-                if (timeRecord.TimeWorkEnd != null)
-                {
-                    timeRecord.TimeWorkEnd = new DateTime(timeRecord.RecordDate.Year,
-                                                timeRecord.RecordDate.Month,
-                                                timeRecord.RecordDate.Day,
-                                                ((DateTime)timeRecord.TimeWorkEnd).Hour,
-                                                ((DateTime)timeRecord.TimeWorkEnd).Minute,
-                                                ((DateTime)timeRecord.TimeWorkEnd).Second);
-                
-                    if (timeRecord.TimeWorkEnd > timeRecord.TimeWorkStart)
-                    {
-                        timeRecord.DurationWork = (DateTime)timeRecord.TimeWorkEnd - timeRecord.TimeWorkStart;
-                    }
-
-                    if(timeRecord.TimeBreak != null)
-                    {
-                        if(timeRecord.TimeBreak <= timeRecord.DurationWork.TotalMinutes)
-                        {
-                            timeRecord.DurationWork = timeRecord.DurationWork - TimeSpan.FromMinutes((double)timeRecord.TimeBreak);
-                        }
-                    }
-                }
+                CalculateTime(ref timeRecord);
 
                 _context.Add(timeRecord);
                 await _context.SaveChangesAsync();
@@ -93,6 +65,7 @@ namespace TimeManagementSystem.Controllers
             }
             return View(timeRecord);
         }
+        
 
         // GET: TimeRecords/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -115,7 +88,7 @@ namespace TimeManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Comments,DurationBreak,DurationWork,RecordDate,TimeBreakEnd,TimeBreakStart,TimeTotal,TimeWorkEnd,TimeWorkStart")] TimeRecord timeRecord)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Comments,DurationWork,RecordDate,TimeBreak,TimeWorkEnd,TimeWorkStart")] TimeRecord timeRecord)
         {
             if (id != timeRecord.ID)
             {
@@ -126,6 +99,8 @@ namespace TimeManagementSystem.Controllers
             {
                 try
                 {
+                    CalculateTime(ref timeRecord);
+
                     _context.Update(timeRecord);
                     await _context.SaveChangesAsync();
                 }
@@ -176,6 +151,39 @@ namespace TimeManagementSystem.Controllers
         private bool TimeRecordExists(int id)
         {
             return _context.TimeRecord.Any(e => e.ID == id);
+        }
+
+        private void CalculateTime(ref TimeRecord timeRecord)
+        {
+            timeRecord.TimeWorkStart = new DateTime(timeRecord.RecordDate.Year,
+                                                    timeRecord.RecordDate.Month,
+                                                    timeRecord.RecordDate.Day,
+                                                    timeRecord.TimeWorkStart.Hour,
+                                                    timeRecord.TimeWorkStart.Minute,
+                                                    timeRecord.TimeWorkStart.Second);
+
+            if (timeRecord.TimeWorkEnd != null)
+            {
+                timeRecord.TimeWorkEnd = new DateTime(timeRecord.RecordDate.Year,
+                                            timeRecord.RecordDate.Month,
+                                            timeRecord.RecordDate.Day,
+                                            ((DateTime)timeRecord.TimeWorkEnd).Hour,
+                                            ((DateTime)timeRecord.TimeWorkEnd).Minute,
+                                            ((DateTime)timeRecord.TimeWorkEnd).Second);
+
+                if (timeRecord.TimeWorkEnd > timeRecord.TimeWorkStart)
+                {
+                    timeRecord.DurationWork = (DateTime)timeRecord.TimeWorkEnd - timeRecord.TimeWorkStart;
+                }
+
+                if (timeRecord.TimeBreak != null)
+                {
+                    if (timeRecord.TimeBreak <= timeRecord.DurationWork.TotalMinutes)
+                    {
+                        timeRecord.DurationWork = timeRecord.DurationWork - TimeSpan.FromMinutes((double)timeRecord.TimeBreak);
+                    }
+                }
+            }
         }
     }
 }
