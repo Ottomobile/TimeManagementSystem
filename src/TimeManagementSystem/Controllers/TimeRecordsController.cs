@@ -72,12 +72,19 @@ namespace TimeManagementSystem.Controllers
                                                 ((DateTime)timeRecord.TimeWorkEnd).Hour,
                                                 ((DateTime)timeRecord.TimeWorkEnd).Minute,
                                                 ((DateTime)timeRecord.TimeWorkEnd).Second);
-                }
+                
+                    if (timeRecord.TimeWorkEnd > timeRecord.TimeWorkStart)
+                    {
+                        timeRecord.DurationWork = (DateTime)timeRecord.TimeWorkEnd - timeRecord.TimeWorkStart;
+                    }
 
-                if (timeRecord.TimeWorkEnd != null &&
-                    timeRecord.TimeWorkEnd > timeRecord.TimeWorkStart)
-                {
-                    timeRecord.DurationWork = (DateTime)timeRecord.TimeWorkEnd - timeRecord.TimeWorkStart;
+                    if(timeRecord.TimeBreak != null)
+                    {
+                        if(timeRecord.TimeBreak <= timeRecord.DurationWork.TotalMinutes)
+                        {
+                            timeRecord.DurationWork = timeRecord.DurationWork - TimeSpan.FromMinutes((double)timeRecord.TimeBreak);
+                        }
+                    }
                 }
 
                 _context.Add(timeRecord);

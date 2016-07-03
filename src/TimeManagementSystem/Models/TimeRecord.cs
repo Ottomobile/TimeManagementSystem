@@ -12,11 +12,11 @@ namespace TimeManagementSystem.Models
         [DataType(DataType.Date)]
         public DateTime RecordDate { get; set; }
 
-        [Display(Name = "Work Start Time")]
+        [Display(Name = "Start Time")]
         [DataType(DataType.Time)]
         public DateTime TimeWorkStart { get; set; }
 
-        [Display(Name = "Work End Time")]
+        [Display(Name = "End Time")]
         [DataType(DataType.Time)]
         public DateTime? TimeWorkEnd { get; set; }
 
@@ -24,7 +24,7 @@ namespace TimeManagementSystem.Models
         [DataType(DataType.Duration)]
         public TimeSpan DurationWork { get; set; }
 
-        [Display(Name = "Break Time (min)")]
+        [Display(Name = "Break Time (Min)")]
         [Range(0, 300)]
         public int? TimeBreak { get; set; }
 
