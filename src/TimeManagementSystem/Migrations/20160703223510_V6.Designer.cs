@@ -8,9 +8,10 @@ using TimeManagementSystem.Data;
 namespace TimeManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160703223510_V6")]
+    partial class V6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -179,13 +180,11 @@ namespace TimeManagementSystem.Migrations
 
                     b.Property<string>("Comments");
 
-                    b.Property<int?>("MiscMin");
+                    b.Property<TimeSpan?>("Hours");
 
                     b.Property<DateTime>("PeriodEnd");
 
                     b.Property<DateTime>("PeriodStart");
-
-                    b.Property<TimeSpan>("PeriodTime");
 
                     b.Property<TimeSpan>("PeriodTotalTime");
 

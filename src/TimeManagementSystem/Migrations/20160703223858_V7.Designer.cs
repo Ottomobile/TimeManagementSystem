@@ -8,9 +8,10 @@ using TimeManagementSystem.Data;
 namespace TimeManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160703223858_V7")]
+    partial class V7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -184,8 +185,6 @@ namespace TimeManagementSystem.Migrations
                     b.Property<DateTime>("PeriodEnd");
 
                     b.Property<DateTime>("PeriodStart");
-
-                    b.Property<TimeSpan>("PeriodTime");
 
                     b.Property<TimeSpan>("PeriodTotalTime");
 
