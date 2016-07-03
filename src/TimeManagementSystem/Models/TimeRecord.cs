@@ -26,7 +26,7 @@ namespace TimeManagementSystem.Models
 
         [Display(Name = "Break Time (min)")]
         [Range(0, 300)]
-        public int TimeBreak { get; set; }
+        public int? TimeBreak { get; set; }
 
         public string Comments { get; set; }
     }
