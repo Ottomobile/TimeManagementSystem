@@ -19,7 +19,7 @@ namespace TimeManagementSystem.Models
         [DataType(DataType.Duration)]
         public TimeSpan PeriodTime { get; set; }
 
-        [Display(Name = "Miscellaneous Minutes")]
+        [Display(Name = "Misc. Minutes")]
         public int? MiscMin { get; set; }
 
         [Display(Name = "Total Time Worked")]
