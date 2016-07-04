@@ -22,7 +22,9 @@ namespace TimeManagementSystem.Controllers
         // GET: PayPeriods
         public async Task<IActionResult> Index()
         {
-            return View(await _context.PayPeriod.ToListAsync());
+            List<PayPeriod> payPeriodList = await _context.PayPeriod.ToListAsync();
+            payPeriodList = payPeriodList.OrderByDescending(x => x.PeriodEnd).ToList();
+            return View(payPeriodList);
         }
 
         // GET: PayPeriods/Details/5
