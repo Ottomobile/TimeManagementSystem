@@ -57,6 +57,28 @@ namespace TimeManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                List<TimeRecord> timeRecords = await _context.TimeRecord.ToListAsync();
+                timeRecords = timeRecords.Where(x => x.RecordDate >= payPeriod.PeriodStart &&
+                                                     x.RecordDate <= payPeriod.PeriodEnd).ToList();
+
+                TimeSpan totalTimeWorked = TimeSpan.Zero;
+                foreach(var timeRecordItem in timeRecords)
+                {
+                    totalTimeWorked += timeRecordItem.DurationWork;
+                }
+
+                payPeriod.PeriodTime = totalTimeWorked;
+                payPeriod.PeriodTotalTime = payPeriod.PeriodTime;
+
+                if(payPeriod.MiscMin != null)
+                {
+                    payPeriod.PeriodTotalTime += TimeSpan.FromMinutes((int)payPeriod.MiscMin);
+                }
+                else
+                {
+                    payPeriod.MiscMin = 0;
+                }
+                
                 _context.Add(payPeriod);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
