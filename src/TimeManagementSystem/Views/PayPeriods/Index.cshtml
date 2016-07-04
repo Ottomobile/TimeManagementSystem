@@ -1,65 +1,71 @@
 @model IEnumerable<TimeManagementSystem.Models.PayPeriod>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Pay Periods";
 }
 
-<h2>Index</h2>
+<h2>Pay Periods</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PeriodStart)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PeriodEnd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PeriodTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MiscMin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PeriodTotalTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comments)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PeriodStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PeriodEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PeriodTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MiscMin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PeriodTotalTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comments)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PeriodStart)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PeriodEnd)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PeriodTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MiscMin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PeriodTotalTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Comments)
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PeriodStart)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PeriodEnd)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PeriodTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MiscMin)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PeriodTotalTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comments)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
