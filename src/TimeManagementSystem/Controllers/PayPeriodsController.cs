@@ -57,28 +57,8 @@ namespace TimeManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                List<TimeRecord> timeRecords = await _context.TimeRecord.ToListAsync();
-                timeRecords = timeRecords.Where(x => x.RecordDate >= payPeriod.PeriodStart &&
-                                                     x.RecordDate <= payPeriod.PeriodEnd).ToList();
+                CalculatePayPeriod(ref payPeriod);
 
-                TimeSpan totalTimeWorked = TimeSpan.Zero;
-                foreach(var timeRecordItem in timeRecords)
-                {
-                    totalTimeWorked += timeRecordItem.DurationWork;
-                }
-
-                payPeriod.PeriodTime = totalTimeWorked;
-                payPeriod.PeriodTotalTime = payPeriod.PeriodTime;
-
-                if(payPeriod.MiscMin != null)
-                {
-                    payPeriod.PeriodTotalTime += TimeSpan.FromMinutes((int)payPeriod.MiscMin);
-                }
-                else
-                {
-                    payPeriod.MiscMin = 0;
-                }
-                
                 _context.Add(payPeriod);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -118,6 +98,8 @@ namespace TimeManagementSystem.Controllers
             {
                 try
                 {
+                    CalculatePayPeriod(ref payPeriod);
+
                     _context.Update(payPeriod);
                     await _context.SaveChangesAsync();
                 }
@@ -168,6 +150,33 @@ namespace TimeManagementSystem.Controllers
         private bool PayPeriodExists(int id)
         {
             return _context.PayPeriod.Any(e => e.ID == id);
+        }
+
+        private void CalculatePayPeriod(ref PayPeriod payPeriod)
+        {
+            List<TimeRecord> timeRecords = _context.TimeRecord.ToList();
+            DateTime periodStart = payPeriod.PeriodStart;
+            DateTime periodEnd = payPeriod.PeriodEnd;
+            timeRecords = timeRecords.Where(x => x.RecordDate >= periodStart &&
+                                                 x.RecordDate <= periodEnd).ToList();
+
+            TimeSpan totalTimeWorked = TimeSpan.Zero;
+            foreach (var timeRecordItem in timeRecords)
+            {
+                totalTimeWorked += timeRecordItem.DurationWork;
+            }
+
+            payPeriod.PeriodTime = totalTimeWorked;
+            payPeriod.PeriodTotalTime = payPeriod.PeriodTime;
+
+            if (payPeriod.MiscMin != null)
+            {
+                payPeriod.PeriodTotalTime += TimeSpan.FromMinutes((int)payPeriod.MiscMin);
+            }
+            else
+            {
+                payPeriod.MiscMin = 0;
+            }
         }
     }
 }
