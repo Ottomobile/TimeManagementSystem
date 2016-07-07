@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using TimeManagementSystem.Data;
 using TimeManagementSystem.Models;
 using TimeManagementSystem.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace TimeManagementSystem
 {
@@ -52,6 +53,9 @@ namespace TimeManagementSystem
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+
+            services.AddAuthorization();
+
             services.AddMvc();
 
             // Add application services.
@@ -85,6 +89,13 @@ namespace TimeManagementSystem
             app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
+            app.UseCookieAuthentication(new CookieAuthenticationOptions {
+                AuthenticationScheme = "Cookie",
+                LoginPath = new PathString("/Account/Login"),
+                AccessDeniedPath = new PathString("/Account/Forbidden"),
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true
+            });
 
             app.UseMvc(routes =>
             {

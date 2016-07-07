@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet-TimeManagementSystem-11e80f8d-6b80-40cf-a4f3-8af1bb9b396f",
 
   "dependencies": {
@@ -40,10 +40,11 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc":  {
+    "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "Microsoft.AspNetCore.Authorization": "1.0.0"
   },
 
   "tools": {
