@@ -1,4 +1,6 @@
 ﻿@model RegisterViewModel
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 @{
     ViewData["Title"] = "Register";
 }
@@ -34,8 +36,13 @@
         <label for="UserRole" class="col-md-2 control-label">Account type</label>
         <div class="col-md-10">
             <select name="UserRole" class="form-control">
-                <option value="Standard">Standard</option>
-                <option value="Manager">Manager</option>
+                @{
+                    List<IdentityRole> userRolesList = (List<IdentityRole>)ViewData["RoleNames"];
+                    foreach (var item in userRolesList)
+                    {
+                        <option value"="@item.NormalizedName">@item.NormalizedName</option>
+                    }
+                }
             </select>
         </div>
     </div>

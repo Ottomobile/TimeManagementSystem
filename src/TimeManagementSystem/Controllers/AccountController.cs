@@ -9,6 +9,9 @@ using Microsoft.Extensions.Logging;
 using TimeManagementSystem.Models;
 using TimeManagementSystem.Models.AccountViewModels;
 using TimeManagementSystem.Services;
+using TimeManagementSystem.Data;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TimeManagementSystem.Controllers
 {
@@ -21,18 +24,22 @@ namespace TimeManagementSystem.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
 
+        private readonly ApplicationDbContext _context;
+
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _context = context;
         }
 
         //
@@ -89,6 +96,9 @@ namespace TimeManagementSystem.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
+            List<IdentityRole> roleNamesList = _context.Roles.ToList();
+            ViewData["RoleNames"] = roleNamesList;
+
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
