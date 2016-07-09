@@ -23,23 +23,6 @@ namespace TimeManagementSystem.Controllers
             return View(await _context.SubscribeToUser.ToListAsync());
         }
 
-        // GET: SubscribeToUsers/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var subscribeToUser = await _context.SubscribeToUser.SingleOrDefaultAsync(m => m.ID == id);
-            if (subscribeToUser == null)
-            {
-                return NotFound();
-            }
-
-            return View(subscribeToUser);
-        }
-
         // GET: SubscribeToUsers/Create
         public IActionResult Create()
         {
@@ -83,57 +66,6 @@ namespace TimeManagementSystem.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "User entered is not a Manager.");
                 }
-            }
-            return View(subscribeToUser);
-        }
-
-        // GET: SubscribeToUsers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var subscribeToUser = await _context.SubscribeToUser.SingleOrDefaultAsync(m => m.ID == id);
-            if (subscribeToUser == null)
-            {
-                return NotFound();
-            }
-            return View(subscribeToUser);
-        }
-
-        // POST: SubscribeToUsers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,CurrentUser,ManagingUser")] SubscribeToUser subscribeToUser)
-        {
-            if (id != subscribeToUser.ID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(subscribeToUser);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SubscribeToUserExists(subscribeToUser.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index");
             }
             return View(subscribeToUser);
         }
