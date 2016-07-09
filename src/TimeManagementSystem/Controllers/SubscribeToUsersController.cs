@@ -39,6 +39,11 @@ namespace TimeManagementSystem.Controllers
             if (ModelState.IsValid)
             {
                 subscribeToUser.CurrentUser = this.User.Identity.Name;
+                if(subscribeToUser.ManagingUser == subscribeToUser.CurrentUser)
+                {
+                    ModelState.AddModelError(string.Empty, "Managing user cannot be the same as the current user.");
+                    return View(subscribeToUser);
+                }
 
                 // Determine if the managing user exists and is a manager
                 bool isManagingUser = false;
@@ -64,7 +69,7 @@ namespace TimeManagementSystem.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "User entered is not a Manager.");
+                    ModelState.AddModelError(string.Empty, "User entered is not a manager.");
                 }
             }
             return View(subscribeToUser);
