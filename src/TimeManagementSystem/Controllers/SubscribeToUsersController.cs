@@ -57,6 +57,7 @@ namespace TimeManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                subscribeToUser.CurrentUser = this.User.Identity.Name;
                 _context.Add(subscribeToUser);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
