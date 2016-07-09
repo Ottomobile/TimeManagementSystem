@@ -8,9 +8,10 @@ using TimeManagementSystem.Data;
 namespace TimeManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160708034137_V12")]
+    partial class V12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -192,22 +193,6 @@ namespace TimeManagementSystem.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("PayPeriod");
-                });
-
-            modelBuilder.Entity("TimeManagementSystem.Models.SubscribeToUser", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CurrentUser")
-                        .HasAnnotation("MaxLength", 256);
-
-                    b.Property<string>("ManagingUser")
-                        .HasAnnotation("MaxLength", 256);
-
-                    b.HasKey("ID");
-
-                    b.ToTable("SubscribeToUser");
                 });
 
             modelBuilder.Entity("TimeManagementSystem.Models.TimeRecord", b =>

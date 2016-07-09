@@ -26,5 +26,7 @@ namespace TimeManagementSystem.Data
         public DbSet<TimeRecord> TimeRecord { get; set; }
 
         public DbSet<PayPeriod> PayPeriod { get; set; }
+
+        public DbSet<SubscribeToUser> SubscribeToUser { get; set; }
     }
 }

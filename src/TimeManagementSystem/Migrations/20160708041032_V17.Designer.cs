@@ -8,9 +8,10 @@ using TimeManagementSystem.Data;
 namespace TimeManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160708041032_V17")]
+    partial class V17
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -200,10 +201,10 @@ namespace TimeManagementSystem.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("CurrentUser")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasAnnotation("MaxLength", 450);
 
                     b.Property<string>("ManagingUser")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasAnnotation("MaxLength", 450);
 
                     b.HasKey("ID");
 
