@@ -23,18 +23,18 @@ namespace TimeManagementSystem.Controllers
             return View(await _context.SubscribeToUser.ToListAsync());
         }
 
-        // GET: SubscribeToUsers/Create
-        public IActionResult Create()
+        // GET: SubscribeToUsers/Add
+        public IActionResult Add()
         {
             return View();
         }
 
-        // POST: SubscribeToUsers/Create
+        // POST: SubscribeToUsers/Add
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,CurrentUser,ManagingUser")] SubscribeToUser subscribeToUser)
+        public async Task<IActionResult> Add([Bind("ID,CurrentUser,ManagingUser")] SubscribeToUser subscribeToUser)
         {
             if (ModelState.IsValid)
             {
