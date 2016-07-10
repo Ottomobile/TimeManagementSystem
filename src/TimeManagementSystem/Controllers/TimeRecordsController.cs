@@ -24,7 +24,8 @@ namespace TimeManagementSystem.Controllers
         // GET: TimeRecords
         public async Task<IActionResult> Index()
         {
-            List<TimeRecord> loggedRecords = await _context.TimeRecord.ToListAsync();
+            string currentUser = this.User.Identity.Name;
+            List<TimeRecord> loggedRecords = await _context.TimeRecord.Where(x => x.UserName == currentUser).ToListAsync();
             loggedRecords = loggedRecords.OrderByDescending(x => x.RecordDate).ToList();
             return View(loggedRecords);
         }
