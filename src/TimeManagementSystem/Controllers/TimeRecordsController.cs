@@ -41,7 +41,12 @@ namespace TimeManagementSystem.Controllers
             var timeRecord = await _context.TimeRecord.SingleOrDefaultAsync(m => m.ID == id);
             if (timeRecord == null)
             {
-                return NotFound();
+                return await CannotAccessModify();
+            }
+
+            if (!CanAccessModify(timeRecord))
+            {
+                return await CannotAccessModify();
             }
 
             return View(timeRecord);
@@ -83,8 +88,14 @@ namespace TimeManagementSystem.Controllers
             var timeRecord = await _context.TimeRecord.SingleOrDefaultAsync(m => m.ID == id);
             if (timeRecord == null)
             {
-                return NotFound();
+                return await CannotAccessModify();
             }
+
+            if (!CanAccessModify(timeRecord))
+            {
+                return await CannotAccessModify();
+            }
+
             return View(timeRecord);
         }
 
@@ -136,7 +147,12 @@ namespace TimeManagementSystem.Controllers
             var timeRecord = await _context.TimeRecord.SingleOrDefaultAsync(m => m.ID == id);
             if (timeRecord == null)
             {
-                return NotFound();
+                return await CannotAccessModify();
+            }
+
+            if (!CanAccessModify(timeRecord))
+            {
+                return await CannotAccessModify();
             }
 
             return View(timeRecord);
@@ -191,6 +207,24 @@ namespace TimeManagementSystem.Controllers
                     }
                 }
             }
+        }
+
+        private bool CanAccessModify(TimeRecord timeRecord)
+        {
+            string currentUser = this.User.Identity.Name;
+            if (timeRecord.UserName == currentUser)
+                return true;
+            else
+                return false;
+        }
+
+        private async Task<IActionResult> CannotAccessModify()
+        {
+            ModelState.AddModelError(string.Empty, "Cannot find the specified time record.");
+            string currentUser = this.User.Identity.Name;
+            List<TimeRecord> loggedRecords = await _context.TimeRecord.Where(x => x.UserName == currentUser).ToListAsync();
+            loggedRecords = loggedRecords.OrderByDescending(x => x.RecordDate).ToList();
+            return View("Index", loggedRecords);
         }
     }
 }
