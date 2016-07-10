@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TimeManagementSystem.Data;
 using TimeManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TimeManagementSystem.Controllers
 {
+    [Authorize(Roles = "Standard")]
     public class TimeRecordsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -157,6 +159,8 @@ namespace TimeManagementSystem.Controllers
 
         private void CalculateTime(ref TimeRecord timeRecord)
         {
+            timeRecord.UserName = this.User.Identity.Name;
+
             timeRecord.TimeWorkStart = new DateTime(timeRecord.RecordDate.Year,
                                                     timeRecord.RecordDate.Month,
                                                     timeRecord.RecordDate.Day,

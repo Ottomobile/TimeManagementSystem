@@ -7,6 +7,10 @@ namespace TimeManagementSystem.Models
     public class TimeRecord
     {
         public int ID { get; set; }
+        
+        [DataType(DataType.Text)]
+        [StringLength(256)]
+        public string UserName { get; set; }
 
         [Display(Name = "Date")]
         [DataType(DataType.Date)]
@@ -28,6 +32,8 @@ namespace TimeManagementSystem.Models
         [Range(0, 300)]
         public int? TimeBreak { get; set; }
 
+        [DataType(DataType.Text)]
+        [StringLength(256)]
         public string Comments { get; set; }
     }
 }

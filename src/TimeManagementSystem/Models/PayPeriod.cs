@@ -26,6 +26,8 @@ namespace TimeManagementSystem.Models
         [DataType(DataType.Duration)]
         public TimeSpan PeriodTotalTime { get; set; }
 
+        [DataType(DataType.Text)]
+        [StringLength(256)]
         public string Comments { get; set; }
     }
 }

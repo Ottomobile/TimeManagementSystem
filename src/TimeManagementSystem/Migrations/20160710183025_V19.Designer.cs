@@ -8,9 +8,10 @@ using TimeManagementSystem.Data;
 namespace TimeManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160710183025_V19")]
+    partial class V19
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -177,8 +178,7 @@ namespace TimeManagementSystem.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Comments")
-                        .HasAnnotation("MaxLength", 256);
+                    b.Property<string>("Comments");
 
                     b.Property<int?>("MiscMin");
 
@@ -216,8 +216,7 @@ namespace TimeManagementSystem.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Comments")
-                        .HasAnnotation("MaxLength", 256);
+                    b.Property<string>("Comments");
 
                     b.Property<TimeSpan>("DurationWork");
 
@@ -229,8 +228,7 @@ namespace TimeManagementSystem.Migrations
 
                     b.Property<DateTime>("TimeWorkStart");
 
-                    b.Property<string>("UserName")
-                        .HasAnnotation("MaxLength", 256);
+                    b.Property<string>("UserName");
 
                     b.HasKey("ID");
 
