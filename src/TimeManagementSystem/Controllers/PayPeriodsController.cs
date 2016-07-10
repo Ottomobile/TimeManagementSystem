@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TimeManagementSystem.Data;
 using TimeManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TimeManagementSystem.Controllers
 {
+    [Authorize(Roles = "Standard")]
     public class PayPeriodsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +23,8 @@ namespace TimeManagementSystem.Controllers
         // GET: PayPeriods
         public async Task<IActionResult> Index()
         {
-            List<PayPeriod> payPeriodList = await _context.PayPeriod.ToListAsync();
+            string currentUser = this.User.Identity.Name;
+            List<PayPeriod> payPeriodList = await _context.PayPeriod.Where(x => x.UserName == currentUser).ToListAsync();
             payPeriodList = payPeriodList.OrderByDescending(x => x.PeriodEnd).ToList();
             return View(payPeriodList);
         }
@@ -38,7 +40,12 @@ namespace TimeManagementSystem.Controllers
             var payPeriod = await _context.PayPeriod.SingleOrDefaultAsync(m => m.ID == id);
             if (payPeriod == null)
             {
-                return NotFound();
+                return await CannotAccessModify();
+            }
+
+            if (!CanAccessModify(payPeriod))
+            {
+                return await CannotAccessModify();
             }
 
             return View(payPeriod);
@@ -79,8 +86,14 @@ namespace TimeManagementSystem.Controllers
             var payPeriod = await _context.PayPeriod.SingleOrDefaultAsync(m => m.ID == id);
             if (payPeriod == null)
             {
-                return NotFound();
+                return await CannotAccessModify();
             }
+
+            if (!CanAccessModify(payPeriod))
+            {
+                return await CannotAccessModify();
+            }
+
             return View(payPeriod);
         }
 
@@ -132,7 +145,12 @@ namespace TimeManagementSystem.Controllers
             var payPeriod = await _context.PayPeriod.SingleOrDefaultAsync(m => m.ID == id);
             if (payPeriod == null)
             {
-                return NotFound();
+                return await CannotAccessModify();
+            }
+
+            if (!CanAccessModify(payPeriod))
+            {
+                return await CannotAccessModify();
             }
 
             return View(payPeriod);
@@ -156,6 +174,8 @@ namespace TimeManagementSystem.Controllers
 
         private void CalculatePayPeriod(ref PayPeriod payPeriod)
         {
+            payPeriod.UserName = this.User.Identity.Name;
+
             List<TimeRecord> timeRecords = _context.TimeRecord.ToList();
             DateTime periodStart = payPeriod.PeriodStart;
             DateTime periodEnd = payPeriod.PeriodEnd;
@@ -179,6 +199,24 @@ namespace TimeManagementSystem.Controllers
             {
                 payPeriod.MiscMin = 0;
             }
+        }
+
+        private bool CanAccessModify(PayPeriod payPeriod)
+        {
+            string currentUser = this.User.Identity.Name;
+            if (payPeriod.UserName == currentUser)
+                return true;
+            else
+                return false;
+        }
+
+        private async Task<IActionResult> CannotAccessModify()
+        {
+            ModelState.AddModelError(string.Empty, "Cannot find the specified pay period.");
+            string currentUser = this.User.Identity.Name;
+            List<PayPeriod> loggedRecords = await _context.PayPeriod.Where(x => x.UserName == currentUser).ToListAsync();
+            loggedRecords = loggedRecords.OrderByDescending(x => x.PeriodEnd).ToList();
+            return View("Index", loggedRecords);
         }
     }
 }

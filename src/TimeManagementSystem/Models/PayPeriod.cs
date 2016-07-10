@@ -7,6 +7,10 @@ namespace TimeManagementSystem.Models
     {
         public int ID { get; set; }
 
+        [DataType(DataType.Text)]
+        [StringLength(256)]
+        public string UserName { get; set; }
+
         [Display(Name = "Start Date")]
         [DataType(DataType.Date)]
         public DateTime PeriodStart { get; set; }
