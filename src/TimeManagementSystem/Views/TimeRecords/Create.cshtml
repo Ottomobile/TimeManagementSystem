@@ -14,7 +14,14 @@
         <div class="form-group">
             <label asp-for="RecordDate" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="RecordDate" class="form-control" />
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="fillCurrentDate()">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </button>
+                    </span>
+                    <input asp-for="RecordDate" class="form-control"/>
+                </div>
                 <span asp-validation-for="RecordDate" class="text-danger" />
             </div>
         </div>
@@ -57,6 +64,27 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script>
+    function fillCurrentDate() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        
+        if(dd<10) {
+            dd='0'+dd
+        } 
+        
+        if(mm<10) {
+            mm='0'+mm
+        } 
+        
+        today = yyyy + '-' + mm + '-' + dd;
+        
+        document.getElementById('RecordDate').value = today;
+    }
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
