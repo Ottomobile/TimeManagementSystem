@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using TimeManagementSystem.Data;
 using TimeManagementSystem.Models;
 using System.Data;
+using System.Collections.Generic;
 
 namespace TimeManagementSystem.Controllers
 {
@@ -20,7 +21,9 @@ namespace TimeManagementSystem.Controllers
         // GET: SubscribeToUsers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.SubscribeToUser.ToListAsync());
+            string currentUser = this.User.Identity.Name;
+            List<SubscribeToUser> subscribedUsersList = await _context.SubscribeToUser.Where(x => x.CurrentUser == currentUser).ToListAsync();
+            return View(subscribedUsersList);
         }
 
         // GET: SubscribeToUsers/Add
@@ -84,15 +87,21 @@ namespace TimeManagementSystem.Controllers
         // GET: SubscribeToUsers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            string currentUser = this.User.Identity.Name;
+
             if (id == null)
             {
-                return NotFound();
+                ModelState.AddModelError(string.Empty, "Cannot find the specified user to delete.");
+                List<SubscribeToUser> subscribedUsersList = await _context.SubscribeToUser.Where(x => x.CurrentUser == currentUser).ToListAsync();
+                return View("Index", subscribedUsersList);
             }
 
-            var subscribeToUser = await _context.SubscribeToUser.SingleOrDefaultAsync(m => m.ID == id);
+            var subscribeToUser = await _context.SubscribeToUser.SingleOrDefaultAsync(m => m.ID == id && m.CurrentUser == currentUser);
             if (subscribeToUser == null)
             {
-                return NotFound();
+                ModelState.AddModelError(string.Empty, "Cannot find the specified user to delete.");
+                List<SubscribeToUser> subscribedUsersList = await _context.SubscribeToUser.Where(x => x.CurrentUser == currentUser).ToListAsync();
+                return View("Index", subscribedUsersList);
             }
 
             return View(subscribeToUser);
