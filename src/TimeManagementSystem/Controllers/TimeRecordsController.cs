@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TimeManagementSystem.Data;
 using TimeManagementSystem.Models;
@@ -35,16 +34,12 @@ namespace TimeManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
-            }
-
-            var timeRecord = await _context.TimeRecord.SingleOrDefaultAsync(m => m.ID == id);
-            if (timeRecord == null)
-            {
                 return await CannotAccessModify();
             }
 
-            if (!CanAccessModify(timeRecord))
+            string currentUser = this.User.Identity.Name;
+            var timeRecord = await _context.TimeRecord.SingleOrDefaultAsync(m => m.ID == id && m.UserName == currentUser);
+            if (timeRecord == null)
             {
                 return await CannotAccessModify();
             }
@@ -82,16 +77,12 @@ namespace TimeManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
-            }
-
-            var timeRecord = await _context.TimeRecord.SingleOrDefaultAsync(m => m.ID == id);
-            if (timeRecord == null)
-            {
                 return await CannotAccessModify();
             }
 
-            if (!CanAccessModify(timeRecord))
+            string currentUser = this.User.Identity.Name;
+            var timeRecord = await _context.TimeRecord.SingleOrDefaultAsync(m => m.ID == id && m.UserName == currentUser);
+            if (timeRecord == null)
             {
                 return await CannotAccessModify();
             }
@@ -141,16 +132,12 @@ namespace TimeManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
-            }
-
-            var timeRecord = await _context.TimeRecord.SingleOrDefaultAsync(m => m.ID == id);
-            if (timeRecord == null)
-            {
                 return await CannotAccessModify();
             }
 
-            if (!CanAccessModify(timeRecord))
+            string currentUser = this.User.Identity.Name;
+            var timeRecord = await _context.TimeRecord.SingleOrDefaultAsync(m => m.ID == id && m.UserName == currentUser);
+            if (timeRecord == null)
             {
                 return await CannotAccessModify();
             }
@@ -207,15 +194,6 @@ namespace TimeManagementSystem.Controllers
                     }
                 }
             }
-        }
-
-        private bool CanAccessModify(TimeRecord timeRecord)
-        {
-            string currentUser = this.User.Identity.Name;
-            if (timeRecord.UserName == currentUser)
-                return true;
-            else
-                return false;
         }
 
         private async Task<IActionResult> CannotAccessModify()
