@@ -1,0 +1,31 @@
+@model TimeManagementSystem.Models.SubscribeToUser
+
+@{
+    ViewData["Title"] = "Add Manager";
+}
+
+<h2>Add Manager</h2>
+
+<form asp-action="Add">
+    <div class="form-horizontal">
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ManagingUser" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ManagingUser" class="form-control" />
+                <span asp-validation-for="ManagingUser" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+                <a class="btn btn-info" asp-controller="TimeRecords" asp-action="Index">Skip</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
