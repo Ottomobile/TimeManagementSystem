@@ -34,16 +34,12 @@ namespace TimeManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
-            }
-
-            var payPeriod = await _context.PayPeriod.SingleOrDefaultAsync(m => m.ID == id);
-            if (payPeriod == null)
-            {
                 return await CannotAccessModify();
             }
 
-            if (!CanAccessModify(payPeriod))
+            string currentUser = this.User.Identity.Name;
+            var payPeriod = await _context.PayPeriod.SingleOrDefaultAsync(m => m.ID == id && m.UserName == currentUser);
+            if (payPeriod == null)
             {
                 return await CannotAccessModify();
             }
@@ -80,16 +76,12 @@ namespace TimeManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
-            }
-
-            var payPeriod = await _context.PayPeriod.SingleOrDefaultAsync(m => m.ID == id);
-            if (payPeriod == null)
-            {
                 return await CannotAccessModify();
             }
 
-            if (!CanAccessModify(payPeriod))
+            string currentUser = this.User.Identity.Name;
+            var payPeriod = await _context.PayPeriod.SingleOrDefaultAsync(m => m.ID == id && m.UserName == currentUser);
+            if (payPeriod == null)
             {
                 return await CannotAccessModify();
             }
@@ -139,16 +131,12 @@ namespace TimeManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
-            }
-
-            var payPeriod = await _context.PayPeriod.SingleOrDefaultAsync(m => m.ID == id);
-            if (payPeriod == null)
-            {
                 return await CannotAccessModify();
             }
 
-            if (!CanAccessModify(payPeriod))
+            string currentUser = this.User.Identity.Name;
+            var payPeriod = await _context.PayPeriod.SingleOrDefaultAsync(m => m.ID == id && m.UserName == currentUser);
+            if (payPeriod == null)
             {
                 return await CannotAccessModify();
             }
@@ -199,15 +187,6 @@ namespace TimeManagementSystem.Controllers
             {
                 payPeriod.MiscMin = 0;
             }
-        }
-
-        private bool CanAccessModify(PayPeriod payPeriod)
-        {
-            string currentUser = this.User.Identity.Name;
-            if (payPeriod.UserName == currentUser)
-                return true;
-            else
-                return false;
         }
 
         private async Task<IActionResult> CannotAccessModify()
