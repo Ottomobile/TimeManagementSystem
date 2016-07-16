@@ -1,0 +1,41 @@
+﻿@model IEnumerable<TimeManagementSystem.Models.SubscribeToUser>
+
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<h2>Manage</h2>
+
+<p>
+    <a asp-action="Add">Add Manager</a>
+</p>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    <!-- Users managed by the current user -->
+                    Users Managed
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <!-- Users managed by the current user -->
+                        @Html.DisplayFor(modelItem => item.CurrentUser)
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

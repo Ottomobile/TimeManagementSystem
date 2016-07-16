@@ -94,15 +94,15 @@ namespace TimeManagementSystem.Controllers
             if (id == null)
             {
                 ModelState.AddModelError(string.Empty, "Cannot find the specified user to delete.");
-                List<SubscribeToUser> subscribedUsersList = await _context.SubscribeToUser.Where(x => x.CurrentUser == currentUser).ToListAsync();
+                List<SubscribeToUser> subscribedUsersList = await _context.SubscribeToUser.Where(x => x.CurrentUser == currentUser || x.ManagingUser == currentUser).ToListAsync();
                 return View("Index", subscribedUsersList);
             }
 
-            var subscribeToUser = await _context.SubscribeToUser.SingleOrDefaultAsync(m => m.ID == id && m.CurrentUser == currentUser);
+            var subscribeToUser = await _context.SubscribeToUser.SingleOrDefaultAsync(m => m.ID == id && m.CurrentUser == currentUser || m.ManagingUser == currentUser);
             if (subscribeToUser == null)
             {
                 ModelState.AddModelError(string.Empty, "Cannot find the specified user to delete.");
-                List<SubscribeToUser> subscribedUsersList = await _context.SubscribeToUser.Where(x => x.CurrentUser == currentUser).ToListAsync();
+                List<SubscribeToUser> subscribedUsersList = await _context.SubscribeToUser.Where(x => x.CurrentUser == currentUser || x.ManagingUser == currentUser).ToListAsync();
                 return View("Index", subscribedUsersList);
             }
 
@@ -123,6 +123,14 @@ namespace TimeManagementSystem.Controllers
         private bool SubscribeToUserExists(int id)
         {
             return _context.SubscribeToUser.Any(e => e.ID == id);
+        }
+
+        // GET: SubscribeToUsers/Delete/5
+        public async Task<IActionResult> ManageUsers()
+        {
+            string currentUser = this.User.Identity.Name;
+            List<SubscribeToUser> subscribedUsersList = await _context.SubscribeToUser.Where(x => x.ManagingUser == currentUser).ToListAsync();
+            return View(subscribedUsersList);
         }
     }
 }
