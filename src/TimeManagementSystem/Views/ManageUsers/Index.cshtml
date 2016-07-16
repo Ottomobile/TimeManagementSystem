@@ -30,7 +30,7 @@
                     </td>
                     <td>
                         <a asp-action="ViewTimeRecords" asp-route-managedUser=@item.CurrentUser>Time Records</a> | 
-                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                        <a asp-controller="SubscribeToUsers" asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                     </td>
                 </tr>
             }
