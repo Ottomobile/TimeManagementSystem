@@ -162,12 +162,14 @@ namespace TimeManagementSystem.Controllers
 
         private void CalculatePayPeriod(ref PayPeriod payPeriod)
         {
-            payPeriod.UserName = this.User.Identity.Name;
+            string currentUser = this.User.Identity.Name;
+            payPeriod.UserName = currentUser;
 
             List<TimeRecord> timeRecords = _context.TimeRecord.ToList();
             DateTime periodStart = payPeriod.PeriodStart;
             DateTime periodEnd = payPeriod.PeriodEnd;
-            timeRecords = timeRecords.Where(x => x.RecordDate >= periodStart &&
+            timeRecords = timeRecords.Where(x => x.UserName == currentUser &&
+                                                 x.RecordDate >= periodStart &&
                                                  x.RecordDate <= periodEnd).ToList();
 
             TimeSpan totalTimeWorked = TimeSpan.Zero;
