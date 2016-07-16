@@ -36,5 +36,14 @@ namespace TimeManagementSystem.Views.SubscribeToUsers
             loggedRecords = loggedRecords.OrderByDescending(x => x.RecordDate).ToList();
             return View(loggedRecords);
         }
+
+        // GET: ManageUsers/ViewPayPeriods/<managedUser>
+        public async Task<IActionResult> ViewPayPeriods(string managedUser)
+        {
+            ViewData["ManagedUser"] = managedUser;
+            List<PayPeriod> payPeriodList = await _context.PayPeriod.Where(x => x.UserName == managedUser).ToListAsync();
+            payPeriodList = payPeriodList.OrderByDescending(x => x.PeriodEnd).ToList();
+            return View(payPeriodList);
+        }
     }
 }

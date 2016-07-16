@@ -1,10 +1,10 @@
-﻿@model IEnumerable<TimeManagementSystem.Models.TimeRecord>
+﻿@model IEnumerable<TimeManagementSystem.Models.PayPeriod>
 
 @{
-    ViewData["Title"] = ViewData["ManagedUser"] + " - Time Records";
+    ViewData["Title"] = ViewData["ManagedUser"] + " - Pay Periods";
 }
 
-<h2>@ViewData["ManagedUser"] - Time Records</h2>
+<h2>@ViewData["ManagedUser"] - Pay Periods</h2>
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <div class="table-responsive">
@@ -12,19 +12,19 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.RecordDate)
+                    @Html.DisplayNameFor(model => model.PeriodStart)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TimeWorkStart)
+                    @Html.DisplayNameFor(model => model.PeriodEnd)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TimeWorkEnd)
+                    @Html.DisplayNameFor(model => model.PeriodTime)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TimeBreak)
+                    @Html.DisplayNameFor(model => model.MiscMin)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.DurationWork)
+                    @Html.DisplayNameFor(model => model.PeriodTotalTime)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Comments)
@@ -36,19 +36,19 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.RecordDate)
+                        @Html.DisplayFor(modelItem => item.PeriodStart)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TimeWorkStart)
+                        @Html.DisplayFor(modelItem => item.PeriodEnd)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TimeWorkEnd)
+                        @Html.DisplayFor(modelItem => item.PeriodTime)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TimeBreak)
+                        @Html.DisplayFor(modelItem => item.MiscMin)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DurationWork)
+                        @Html.DisplayFor(modelItem => item.PeriodTotalTime)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Comments)
