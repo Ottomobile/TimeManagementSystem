@@ -29,7 +29,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.DurationWork)
                 </th>
-                <th>
+                <th style="width:200px">
                     @Html.DisplayNameFor(model => model.Comments)
                 </th>
                 <th>
@@ -56,7 +56,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.DurationWork)
                     </td>
-                    <td>
+                    <td style="min-width: 200px;max-width: 200px; word-wrap:break-word; white-space:normal;">
                         @Html.DisplayFor(modelItem => item.Comments)
                     </td>
                     <td>

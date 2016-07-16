@@ -28,7 +28,7 @@ namespace TimeManagementSystem.Models
         [DataType(DataType.Duration)]
         public TimeSpan DurationWork { get; set; }
 
-        [Display(Name = "Break Time (Min)")]
+        [Display(Name = "Break (Min)")]
         [Range(0, 300)]
         public int? TimeBreak { get; set; }
 
