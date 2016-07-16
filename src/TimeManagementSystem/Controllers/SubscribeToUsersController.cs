@@ -6,9 +6,11 @@ using TimeManagementSystem.Data;
 using TimeManagementSystem.Models;
 using System.Data;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TimeManagementSystem.Controllers
 {
+    [Authorize(Roles = "Standard, Manager")]
     public class SubscribeToUsersController : Controller
     {
         private readonly ApplicationDbContext _context;

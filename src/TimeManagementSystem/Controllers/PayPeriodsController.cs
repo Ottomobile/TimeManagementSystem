@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TimeManagementSystem.Controllers
 {
-    [Authorize(Roles = "Standard")]
+    [Authorize(Roles = "Standard, Manager")]
     public class PayPeriodsController : Controller
     {
         private readonly ApplicationDbContext _context;
