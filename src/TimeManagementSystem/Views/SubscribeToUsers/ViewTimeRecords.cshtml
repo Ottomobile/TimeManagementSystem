@@ -6,9 +6,6 @@
 
 <h2>@ViewData["ManagedUser"] - Time Records</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <div class="table-responsive">
     <table class="table table-striped table-bordered">
@@ -31,9 +28,6 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Comments)
-                </th>
-                <th>
-                    Actions
                 </th>
             </tr>
         </thead>
@@ -58,11 +52,6 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Comments)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                     </td>
                 </tr>
             }
