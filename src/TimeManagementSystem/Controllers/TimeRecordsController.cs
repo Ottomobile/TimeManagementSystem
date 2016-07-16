@@ -62,11 +62,14 @@ namespace TimeManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                CalculateTime(ref timeRecord);
+                bool result = CalculateTime(ref timeRecord);
 
-                _context.Add(timeRecord);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                if (result)
+                {
+                    _context.Add(timeRecord);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
             }
             return View(timeRecord);
         }
@@ -161,7 +164,17 @@ namespace TimeManagementSystem.Controllers
             return _context.TimeRecord.Any(e => e.ID == id);
         }
 
-        private void CalculateTime(ref TimeRecord timeRecord)
+        /*
+         * Calculates the total time work for one time record.
+         * Also validates if the entered times are valid.
+         * 
+         * Param: TimeRecord
+         *          Required: RecordDate, TimeWorkStart
+         *          Optional: TimeWorkEnd, BreakTime, Comments
+         * Return: true if time was calculated successfully,
+         *         false if there is an error with one of the fields
+         */         
+        private bool CalculateTime(ref TimeRecord timeRecord)
         {
             timeRecord.UserName = this.User.Identity.Name;
 
@@ -181,9 +194,14 @@ namespace TimeManagementSystem.Controllers
                                             ((DateTime)timeRecord.TimeWorkEnd).Minute,
                                             ((DateTime)timeRecord.TimeWorkEnd).Second);
 
-                if (timeRecord.TimeWorkEnd > timeRecord.TimeWorkStart)
+                if (timeRecord.TimeWorkEnd >= timeRecord.TimeWorkStart)
                 {
                     timeRecord.DurationWork = (DateTime)timeRecord.TimeWorkEnd - timeRecord.TimeWorkStart;
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "The end time cannot be less than the start time.");
+                    return false;
                 }
 
                 if (timeRecord.TimeBreak != null)
@@ -192,10 +210,24 @@ namespace TimeManagementSystem.Controllers
                     {
                         timeRecord.DurationWork = timeRecord.DurationWork - TimeSpan.FromMinutes((double)timeRecord.TimeBreak);
                     }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "The break time cannot exceed the duration worked.");
+                        return false;
+                    }
                 }
             }
+            return true;
         }
 
+        /*
+         * Returns the logged in user to the index page if the specified record
+         * cannot be accessed.
+         * This is done to ensure that users manipulating the URL cannot
+         * access the records of others that they should not have access to.
+         * 
+         * Return: Index view containing error
+         */  
         private async Task<IActionResult> CannotAccessModify()
         {
             ModelState.AddModelError(string.Empty, "Cannot find the specified time record.");
