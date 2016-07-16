@@ -29,6 +29,7 @@
                         @Html.DisplayFor(modelItem => item.CurrentUser)
                     </td>
                     <td>
+                        <a asp-action="ViewTimeRecords" asp-route-managedUser=@item.CurrentUser>Time Records</a> | 
                         <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                     </td>
                 </tr>

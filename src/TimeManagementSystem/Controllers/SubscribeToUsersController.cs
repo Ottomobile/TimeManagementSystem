@@ -132,5 +132,13 @@ namespace TimeManagementSystem.Controllers
             List<SubscribeToUser> subscribedUsersList = await _context.SubscribeToUser.Where(x => x.ManagingUser == currentUser).ToListAsync();
             return View(subscribedUsersList);
         }
+
+        public async Task<IActionResult> ViewTimeRecords(string managedUser)
+        {
+            ViewData["ManagedUser"] = managedUser;
+            List<TimeRecord> loggedRecords = await _context.TimeRecord.Where(x => x.UserName == managedUser).ToListAsync();
+            loggedRecords = loggedRecords.OrderByDescending(x => x.RecordDate).ToList();
+            return View(loggedRecords);
+        }
     }
 }
