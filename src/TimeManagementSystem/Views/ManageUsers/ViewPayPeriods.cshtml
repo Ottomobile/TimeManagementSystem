@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = ViewData["ManagedUser"] + " - Pay Periods";
 }
+<link href="~/css/TableCustom.css" rel="stylesheet" />
 
 <h2>@ViewData["ManagedUser"] - Pay Periods</h2>
 
@@ -26,7 +27,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.PeriodTotalTime)
                 </th>
-                <th>
+                <th class="comments-header">
                     @Html.DisplayNameFor(model => model.Comments)
                 </th>
             </tr>
@@ -51,7 +52,9 @@
                         @Html.DisplayFor(modelItem => item.PeriodTotalTime)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Comments)
+                        <div class="comments-cell">
+                            @Html.DisplayFor(modelItem => item.Comments)
+                        </div>
                     </td>
                 </tr>
             }
