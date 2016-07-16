@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<ApplicationUser> SignInManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -31,12 +33,18 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                @{ 
+                    if (SignInManager.IsSignedIn(User))
+                    {
+                        <li><a asp-area="" asp-controller="TimeRecords" asp-action="Index">Time Records</a></li>
+                        <li><a asp-area="" asp-controller="PayPeriods" asp-action="Index">Pay Periods</a></li>
 
-                    <li><a asp-area="" asp-controller="TimeRecords" asp-action="Index">Time Records</a></li>
-                    <li><a asp-area="" asp-controller="PayPeriods" asp-action="Index">Pay Periods</a></li>
-                    @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
+                        if (User.IsInRole("Manager"))
+                        {
+                        <li><a asp-area="" asp-controller="ManageUsers" asp-action="Index">Manage Users</a></li>
+                        }
+                    }
+                }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
