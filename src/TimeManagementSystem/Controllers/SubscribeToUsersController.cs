@@ -49,10 +49,22 @@ namespace TimeManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                subscribeToUser.CurrentUser = this.User.Identity.Name;
-                if(subscribeToUser.ManagingUser == subscribeToUser.CurrentUser)
+                string currentUser = this.User.Identity.Name;
+                subscribeToUser.CurrentUser = currentUser;
+
+                // Check that a user cannot add themselves as a manager
+                if (subscribeToUser.ManagingUser == currentUser)
                 {
                     ModelState.AddModelError(string.Empty, "Managing user cannot be the same as the current user.");
+                    return View(subscribeToUser);
+                }
+
+                // Check if the manager has already been added
+                string managingUser = subscribeToUser.ManagingUser;
+                if( _context.SubscribeToUser.Where(x => x.CurrentUser == currentUser &&          
+                                                        x.ManagingUser == managingUser).ToList().Count > 0)
+                {
+                    ModelState.AddModelError(string.Empty, "Manager already added previously.");
                     return View(subscribeToUser);
                 }
 
