@@ -109,10 +109,17 @@ namespace TimeManagementSystem.Controllers
             {
                 try
                 {
-                    CalculateTime(ref timeRecord);
+                    bool result = CalculateTime(ref timeRecord);
 
-                    _context.Update(timeRecord);
-                    await _context.SaveChangesAsync();
+                    if (result)
+                    {
+                        _context.Update(timeRecord);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        return View(timeRecord);
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
