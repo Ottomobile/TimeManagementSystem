@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Pay Periods";
 }
+<link href="~/css/TableCustom.css" rel="stylesheet" />
 
 <h2>Pay Periods</h2>
 
@@ -29,7 +30,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.PeriodTotalTime)
                 </th>
-                <th>
+                <th class="comments-header">
                     @Html.DisplayNameFor(model => model.Comments)
                 </th>
                 <th>
@@ -57,7 +58,9 @@
                         @Html.DisplayFor(modelItem => item.PeriodTotalTime)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Comments)
+                        <div class="comments-cell">
+                            @Html.DisplayFor(modelItem => item.Comments)
+                        </div>
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
