@@ -55,7 +55,16 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2016 - Time Management System</p>
+            <div class="row">
+                <div class="col-md-9">
+                    <p>&copy; 2016 - Time Management System</p>
+                </div>
+                <div class="col-md-3 text-right">
+                    <a asp-controller="Home" asp-action="Contact"><span class="glyphicon glyphicon-envelope"></span> Contact</a>
+                    &nbsp;
+                    <a asp-controller="Home" asp-action="About"><span class="glyphicon glyphicon-info-sign"></span> About</a>
+                </div>
+            </div>
         </footer>
     </div>
 
