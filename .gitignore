@@ -243,3 +243,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/src/TimeManagementSystem/Properties/PublishProfiles
+/src/TimeManagementSystem/Resource.resx
+/src/TimeManagementSystem/Resource.Designer.cs

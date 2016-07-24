@@ -116,6 +116,15 @@ namespace TimeManagementSystem.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                // Only users who have the registration code can create an account
+                string regCode = Request.Form["regcode"];
+                string secret = Resource.ResourceManager.GetString("RegCode");
+                if(regCode != secret)
+                {
+                    ModelState.AddModelError(string.Empty, "Incorrect registration code.");
+                    return View(model);
+                }
+
                 // Create the user account
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
