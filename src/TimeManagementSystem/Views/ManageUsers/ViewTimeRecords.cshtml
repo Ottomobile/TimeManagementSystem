@@ -61,5 +61,8 @@
         </tbody>
     </table>
 </div>
-
+<form asp-action="ExportToCSV" method="post">
+    <button name ="ExportUser" type="submit" value="@ViewData["ManagedUser"]" class="btn btn-success">Export to CSV File</button>
+</form>
+<br />
 <a asp-action="Index">Back to List</a>
