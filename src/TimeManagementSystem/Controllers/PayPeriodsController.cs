@@ -62,6 +62,13 @@ namespace TimeManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Check that the end date is after the start date 
+                if (payPeriod.PeriodEnd < payPeriod.PeriodStart)
+                {
+                    ModelState.AddModelError(string.Empty, "Pay period end date cannot be before start date.");
+                    return View();
+                }
+
                 CalculatePayPeriod(ref payPeriod);
 
                 _context.Add(payPeriod);
@@ -105,6 +112,13 @@ namespace TimeManagementSystem.Controllers
             {
                 try
                 {
+                    // Check that the end date is after the start date 
+                    if (payPeriod.PeriodEnd < payPeriod.PeriodStart)
+                    {
+                        ModelState.AddModelError(string.Empty, "Pay period end date cannot be before start date.");
+                        return View();
+                    }
+
                     CalculatePayPeriod(ref payPeriod);
 
                     _context.Update(payPeriod);
@@ -159,7 +173,6 @@ namespace TimeManagementSystem.Controllers
         {
             return _context.PayPeriod.Any(e => e.ID == id);
         }
-
         private void CalculatePayPeriod(ref PayPeriod payPeriod)
         {
             string currentUser = this.User.Identity.Name;
