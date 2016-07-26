@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using TimeManagementSystem.Data;
 using TimeManagementSystem.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace TimeManagementSystem.Controllers
 {
@@ -211,6 +213,41 @@ namespace TimeManagementSystem.Controllers
             List<PayPeriod> loggedRecords = await _context.PayPeriod.Where(x => x.UserName == currentUser).ToListAsync();
             loggedRecords = loggedRecords.OrderByDescending(x => x.PeriodEnd).ToList();
             return View("Index", loggedRecords);
+        }
+
+        /*
+        * Writes the pay period records of the current user to a CSV file and
+        * forces the browser to download this file.
+        */
+        [HttpPost]
+        public void ExportPayPeriodsToCSV()
+        {
+            Response.Clear();
+            Response.Headers.Add("content-disposition", "attachment; filename=testfile.txt");
+            Response.Headers.Add("content-type", "text/plain");
+
+            using (StreamWriter writer = new StreamWriter(Response.Body))
+            {
+                writer.WriteLine("Start Date,End Date,Time Worked,Misc. Minutes,Total Time Worked,Comments");
+
+                string currentUser = this.User.Identity.Name;
+                List<PayPeriod> payRecordsList = _context.PayPeriod.Where(x => x.UserName == currentUser).ToList<PayPeriod>();
+                payRecordsList = payRecordsList.OrderByDescending(x => x.PeriodEnd).ToList();
+
+                foreach (var payRecord in payRecordsList)
+                {
+                    string PeriodStart = (payRecord.PeriodStart != null) ? payRecord.PeriodStart.ToString("MM/dd/yyyy") : "";
+                    string PeriodEnd = (payRecord.PeriodEnd != null) ? payRecord.PeriodEnd.ToString("MM/dd/yyyy") : "";
+                    string PeriodTime = (payRecord.PeriodTime != null) ? payRecord.PeriodTime.ToString() : "";
+                    string MiscMin = (payRecord.MiscMin != null) ? payRecord.MiscMin.ToString() : "";
+                    string PeriodTotalTime = (payRecord.PeriodTotalTime != null) ? payRecord.PeriodTotalTime.ToString() : "";
+                    string Comments = (payRecord.Comments != null) ? "\"" + payRecord.Comments.ToString() + "\"" : "";
+
+                    writer.WriteLine("{0},{1},{2},{3},{4},{5}",
+                                    PeriodStart, PeriodEnd, PeriodTime,
+                                    MiscMin, PeriodTotalTime, Comments);
+                }
+            }
         }
     }
 }

@@ -261,8 +261,8 @@ namespace TimeManagementSystem.Controllers
             {
                 writer.WriteLine("Date,Start Time,End Time,Break (Min),Duration Worked,Comments");
 
-                string Username = this.User.Identity.Name;
-                List<TimeRecord> timeRecordsList = _context.TimeRecord.Where(x => x.UserName == Username).ToList<TimeRecord>();
+                string currentUser = this.User.Identity.Name;
+                List<TimeRecord> timeRecordsList = _context.TimeRecord.Where(x => x.UserName == currentUser).ToList<TimeRecord>();
                 timeRecordsList = timeRecordsList.OrderByDescending(x => x.RecordDate).ToList();
 
                 foreach (var timeRecord in timeRecordsList)
