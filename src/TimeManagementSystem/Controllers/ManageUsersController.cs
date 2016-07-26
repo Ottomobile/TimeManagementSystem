@@ -53,7 +53,7 @@ namespace TimeManagementSystem.Views.SubscribeToUsers
          * forces the browser to download this file.
          */
         [HttpPost]
-        public void ExportToCSV()
+        public void ExportTimeRecordsToCSV()
         {
             Response.Clear();
             Response.Headers.Add("content-disposition", "attachment; filename=testfile.txt");
@@ -74,11 +74,46 @@ namespace TimeManagementSystem.Views.SubscribeToUsers
                     string TimeWorkEnd = (timeRecord.TimeWorkEnd != null) ? ((DateTime)(timeRecord.TimeWorkEnd)).ToString("hh:mm tt") : "";
                     string TimeBreak = (timeRecord.TimeBreak != null) ? timeRecord.TimeBreak.ToString() : "";
                     string DurationWork = (timeRecord.DurationWork != null) ? timeRecord.DurationWork.ToString() : "";
-                    string Comments = (timeRecord.Comments != null) ? timeRecord.Comments.ToString() : "";
+                    string Comments = (timeRecord.Comments != null) ? "\"" + timeRecord.Comments.ToString() + "\"" : "";
 
                     writer.WriteLine("{0},{1},{2},{3},{4},{5}",
                                     RecordDate, TimeWorkStart, TimeWorkEnd,
                                     TimeBreak, DurationWork, Comments);
+                }
+            }
+        }
+
+        /*
+         * Writes the pay period records of the managed user to a CSV file and
+         * forces the browser to download this file.
+         */
+        [HttpPost]
+        public void ExportPayPeriodsToCSV()
+        {
+            Response.Clear();
+            Response.Headers.Add("content-disposition", "attachment; filename=testfile.txt");
+            Response.Headers.Add("content-type", "text/plain");
+
+            using (StreamWriter writer = new StreamWriter(Response.Body))
+            {
+                writer.WriteLine("Start Date,End Date,Time Worked,Misc. Minutes,Total Time Worked,Comments");
+
+                string managedUser = this.Request.Form["ExportUser"];
+                List<PayPeriod> payRecordsList = _context.PayPeriod.Where(x => x.UserName == managedUser).ToList<PayPeriod>();
+                payRecordsList = payRecordsList.OrderByDescending(x => x.PeriodEnd).ToList();
+
+                foreach (var payRecord in payRecordsList)
+                {
+                    string PeriodStart = (payRecord.PeriodStart != null) ? payRecord.PeriodStart.ToString("MM/dd/yyyy") : "";
+                    string PeriodEnd = (payRecord.PeriodEnd != null) ? payRecord.PeriodEnd.ToString("MM/dd/yyyy") : "";
+                    string PeriodTime = (payRecord.PeriodTime != null) ? payRecord.PeriodTime.ToString() : "";
+                    string MiscMin = (payRecord.MiscMin != null) ? payRecord.MiscMin.ToString() : "";
+                    string PeriodTotalTime = (payRecord.PeriodTotalTime != null) ? payRecord.PeriodTotalTime.ToString() : "";
+                    string Comments = (payRecord.Comments != null) ? "\"" + payRecord.Comments.ToString() + "\"" : "";
+
+                    writer.WriteLine("{0},{1},{2},{3},{4},{5}",
+                                    PeriodStart, PeriodEnd, PeriodTime,
+                                    MiscMin, PeriodTotalTime, Comments);
                 }
             }
         }

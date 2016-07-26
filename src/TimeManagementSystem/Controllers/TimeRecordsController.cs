@@ -251,7 +251,7 @@ namespace TimeManagementSystem.Controllers
          * forces the browser to download this file.
          */
         [HttpPost]
-        public void ExportToCSV()
+        public void ExportTimeRecordsToCSV()
         {
             Response.Clear();
             Response.Headers.Add("content-disposition", "attachment; filename=testfile.txt");
@@ -272,7 +272,7 @@ namespace TimeManagementSystem.Controllers
                     string TimeWorkEnd = (timeRecord.TimeWorkEnd != null) ? ((DateTime)(timeRecord.TimeWorkEnd)).ToString("hh:mm tt") : "";
                     string TimeBreak = (timeRecord.TimeBreak != null) ? timeRecord.TimeBreak.ToString() : "";
                     string DurationWork = (timeRecord.DurationWork != null) ? timeRecord.DurationWork.ToString() : "";
-                    string Comments = (timeRecord.Comments != null) ? timeRecord.Comments.ToString() : "";
+                    string Comments = (timeRecord.Comments != null) ? "\"" + timeRecord.Comments.ToString() + "\"" : "";
                     
                     writer.WriteLine("{0},{1},{2},{3},{4},{5}",
                                     RecordDate, TimeWorkStart, TimeWorkEnd,
