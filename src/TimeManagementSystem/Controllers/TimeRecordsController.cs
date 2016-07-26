@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using TimeManagementSystem.Data;
 using TimeManagementSystem.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace TimeManagementSystem.Controllers
 {
@@ -242,6 +244,41 @@ namespace TimeManagementSystem.Controllers
             List<TimeRecord> loggedRecords = await _context.TimeRecord.Where(x => x.UserName == currentUser).ToListAsync();
             loggedRecords = loggedRecords.OrderByDescending(x => x.RecordDate).ToList();
             return View("Index", loggedRecords);
+        }
+        
+        /*
+         * Writes the time records of the specified user to a CSV file and
+         * forces the browser to download this file.
+         */
+        [HttpPost]
+        public void ExportToCSV()
+        {
+            Response.Clear();
+            Response.Headers.Add("content-disposition", "attachment; filename=testfile.txt");
+            Response.Headers.Add("content-type", "text/plain");
+
+            using (StreamWriter writer = new StreamWriter(Response.Body))
+            {
+                writer.WriteLine("Date,Start Time,End Time,Break (Min),Duration Worked,Comments");
+
+                string Username = this.User.Identity.Name;
+                List<TimeRecord> timeRecordsList = _context.TimeRecord.Where(x => x.UserName == Username).ToList<TimeRecord>();
+                timeRecordsList = timeRecordsList.OrderByDescending(x => x.RecordDate).ToList();
+
+                foreach (var timeRecord in timeRecordsList)
+                {
+                    string RecordDate = (timeRecord.RecordDate != null) ? timeRecord.RecordDate.ToString("MM/dd/yyyy") : "";
+                    string TimeWorkStart = (timeRecord.TimeWorkStart != null) ? timeRecord.TimeWorkStart.ToString("hh:mm tt") : "";
+                    string TimeWorkEnd = (timeRecord.TimeWorkEnd != null) ? ((DateTime)(timeRecord.TimeWorkEnd)).ToString("hh:mm tt") : "";
+                    string TimeBreak = (timeRecord.TimeBreak != null) ? timeRecord.TimeBreak.ToString() : "";
+                    string DurationWork = (timeRecord.DurationWork != null) ? timeRecord.DurationWork.ToString() : "";
+                    string Comments = (timeRecord.Comments != null) ? timeRecord.Comments.ToString() : "";
+                    
+                    writer.WriteLine("{0},{1},{2},{3},{4},{5}",
+                                    RecordDate, TimeWorkStart, TimeWorkEnd,
+                                    TimeBreak, DurationWork, Comments);
+                }
+            }
         }
     }
 }
