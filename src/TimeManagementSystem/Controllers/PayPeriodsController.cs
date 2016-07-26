@@ -222,15 +222,15 @@ namespace TimeManagementSystem.Controllers
         [HttpPost]
         public void ExportPayPeriodsToCSV()
         {
+            string currentUser = this.User.Identity.Name;
             Response.Clear();
-            Response.Headers.Add("content-disposition", "attachment; filename=testfile.txt");
+            Response.Headers.Add("content-disposition", String.Format("attachment; filename=PayPeriods - {0}.csv", currentUser));
             Response.Headers.Add("content-type", "text/plain");
 
             using (StreamWriter writer = new StreamWriter(Response.Body))
             {
                 writer.WriteLine("Start Date,End Date,Time Worked,Misc. Minutes,Total Time Worked,Comments");
 
-                string currentUser = this.User.Identity.Name;
                 List<PayPeriod> payRecordsList = _context.PayPeriod.Where(x => x.UserName == currentUser).ToList<PayPeriod>();
                 payRecordsList = payRecordsList.OrderByDescending(x => x.PeriodEnd).ToList();
 

@@ -55,15 +55,15 @@ namespace TimeManagementSystem.Views.SubscribeToUsers
         [HttpPost]
         public void ExportTimeRecordsToCSV()
         {
+            string managedUser = this.Request.Form["ExportUser"];
             Response.Clear();
-            Response.Headers.Add("content-disposition", "attachment; filename=testfile.txt");
+            Response.Headers.Add("content-disposition", String.Format("attachment; filename=TimeRecords - {0}.csv", managedUser));
             Response.Headers.Add("content-type", "text/plain");
             
             using (StreamWriter writer = new StreamWriter(Response.Body))
             {
                 writer.WriteLine("Date,Start Time,End Time,Break (Min),Duration Worked,Comments");
 
-                string managedUser = this.Request.Form["ExportUser"];
                 List<TimeRecord> timeRecordsList = _context.TimeRecord.Where(x => x.UserName == managedUser).ToList<TimeRecord>();
                 timeRecordsList = timeRecordsList.OrderByDescending(x => x.RecordDate).ToList();
 
@@ -90,15 +90,15 @@ namespace TimeManagementSystem.Views.SubscribeToUsers
         [HttpPost]
         public void ExportPayPeriodsToCSV()
         {
+            string managedUser = this.Request.Form["ExportUser"];
             Response.Clear();
-            Response.Headers.Add("content-disposition", "attachment; filename=testfile.txt");
+            Response.Headers.Add("content-disposition", String.Format("attachment; filename=PayPeriods - {0}.csv", managedUser));
             Response.Headers.Add("content-type", "text/plain");
 
             using (StreamWriter writer = new StreamWriter(Response.Body))
             {
                 writer.WriteLine("Start Date,End Date,Time Worked,Misc. Minutes,Total Time Worked,Comments");
 
-                string managedUser = this.Request.Form["ExportUser"];
                 List<PayPeriod> payRecordsList = _context.PayPeriod.Where(x => x.UserName == managedUser).ToList<PayPeriod>();
                 payRecordsList = payRecordsList.OrderByDescending(x => x.PeriodEnd).ToList();
 

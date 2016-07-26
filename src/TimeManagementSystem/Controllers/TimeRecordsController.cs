@@ -253,15 +253,15 @@ namespace TimeManagementSystem.Controllers
         [HttpPost]
         public void ExportTimeRecordsToCSV()
         {
+            string currentUser = this.User.Identity.Name;
             Response.Clear();
-            Response.Headers.Add("content-disposition", "attachment; filename=testfile.txt");
+            Response.Headers.Add("content-disposition", String.Format("attachment; filename=TimeRecords - {0}.csv",currentUser));
             Response.Headers.Add("content-type", "text/plain");
 
             using (StreamWriter writer = new StreamWriter(Response.Body))
             {
                 writer.WriteLine("Date,Start Time,End Time,Break (Min),Duration Worked,Comments");
-
-                string currentUser = this.User.Identity.Name;
+                
                 List<TimeRecord> timeRecordsList = _context.TimeRecord.Where(x => x.UserName == currentUser).ToList<TimeRecord>();
                 timeRecordsList = timeRecordsList.OrderByDescending(x => x.RecordDate).ToList();
 
