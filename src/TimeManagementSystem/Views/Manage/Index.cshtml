@@ -8,22 +8,24 @@
 
 <div>
     <h4>Change your account settings</h4>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <hr />
-    
     <dl class="dl-horizontal">
         <dt>User Type:</dt>
         <dd>
             @{
                 if (User.IsInRole("Manager"))
                 {
-                    <p>Manager</p>
+                    @String.Format("Manager");
                 }
                 else
                 {
-                    <p>Standard</p>
+                    @String.Format("Standard");
                 }
             }
         </dd>
+        <dt>&nbsp;</dt>
+        <dd>&nbsp;</dd>
         <dt>Password:</dt>
         <dd>
             @if (Model.HasPassword)
@@ -35,10 +37,17 @@
                 <a asp-controller="Manage" asp-action="SetPassword">[Create]</a>
             }
         </dd>
-        <dt>&nbsp;</dt><dd>&nbsp;</dd>
+        <dt>&nbsp;</dt>
+        <dd>&nbsp;</dd>
         <dt>Subscribe to Users:</dt>
         <dd>
             <a asp-controller="SubscribeToUsers" asp-action="Index">[Edit]</a>
         </dd>
-</dl>
+        <dt>&nbsp;</dt>
+        <dd>&nbsp;</dd>
+        <dt>Delete Account:</dt>
+        <dd>
+            <a asp-controller="Manage" asp-action="DeleteAccount">[Delete]</a>
+        </dd>
+    </dl>
 </div>

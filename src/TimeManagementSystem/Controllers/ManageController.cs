@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using TimeManagementSystem.Models;
 using TimeManagementSystem.Models.ManageViewModels;
 using TimeManagementSystem.Services;
+using TimeManagementSystem.Data;
+using System.Collections.Generic;
 
 namespace TimeManagementSystem.Controllers
 {
@@ -20,19 +20,22 @@ namespace TimeManagementSystem.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly ApplicationDbContext _context;
 
         public ManageController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IEmailSender emailSender,
         ISmsSender smsSender,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory,
+        ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+            _context = context;
         }
 
         //
@@ -326,6 +329,57 @@ namespace TimeManagementSystem.Controllers
             var result = await _userManager.AddLoginAsync(user, info);
             var message = result.Succeeded ? ManageMessageId.AddLoginSuccess : ManageMessageId.Error;
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
+        }
+
+        [HttpGet]
+        public IActionResult DeleteAccount()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAccountConfirmed()
+        {
+            ApplicationUser currentUser = await GetCurrentUserAsync();
+
+            // If deleting a manager, must remove manager from subscription list before deleting
+            List<SubscribeToUser> subList = _context.SubscribeToUser.Where(x => x.ManagingUser == currentUser.UserName).ToList<SubscribeToUser>();
+            if(subList.Count != 0)
+            {
+                foreach(SubscribeToUser record in subList)
+                {
+                    _context.SubscribeToUser.Remove(record);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            var result = await _userManager.DeleteAsync(currentUser);
+            if (result.Succeeded)
+            {
+                // Log off
+                await _signInManager.SignOutAsync();
+                _logger.LogInformation(4, "User logged out.");
+                return RedirectToAction("DeleteAccountSuccessful");
+            }
+
+            // Failed to delete account
+            var model = new IndexViewModel
+            {
+                HasPassword = await _userManager.HasPasswordAsync(currentUser),
+                PhoneNumber = await _userManager.GetPhoneNumberAsync(currentUser),
+                TwoFactor = await _userManager.GetTwoFactorEnabledAsync(currentUser),
+                Logins = await _userManager.GetLoginsAsync(currentUser),
+                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(currentUser)
+            };
+            ModelState.AddModelError(string.Empty, "Failed to delete account.");
+            return View("Index", model);
+        }
+
+        [AllowAnonymous]
+        public IActionResult DeleteAccountSuccessful()
+        {
+            return View();
         }
 
         #region Helpers
